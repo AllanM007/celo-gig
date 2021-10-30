@@ -16,42 +16,42 @@ interface IERC20Token {
 
 contract Marketplace {
 
-    uint internal productsLength = 0;
+    uint internal gigsLength = 0;
     address internal cUsdTokenAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
 
-    struct Product {
+    struct Gig {
         address payable owner;
         string name;
-        string image;
+        string gig;
         string description;
         string location;
         uint price;
         uint sold;
     }
 
-    mapping (uint => Product) internal products;
+    mapping (uint => Gig) internal gigs;
 
-    function writeProduct(
+    function writeGig(
         string memory _name,
-        string memory _image,
+        string memory _gig,
         string memory _description, 
         string memory _location, 
         uint _price
     ) public {
         uint _sold = 0;
-        products[productsLength] = Product(
+        gigs[gigsLength] = Gig(
             payable(msg.sender),
             _name,
-            _image,
+            _gig,
             _description,
             _location,
             _price,
             _sold
         );
-        productsLength++;
+        gigsLength++;
     }
 
-    function readProduct(uint _index) public view returns (
+    function readGig(uint _index) public view returns (
         address payable,
         string memory, 
         string memory, 
@@ -61,29 +61,29 @@ contract Marketplace {
         uint
     ) {
         return (
-            products[_index].owner,
-            products[_index].name, 
-            products[_index].image, 
-            products[_index].description, 
-            products[_index].location, 
-            products[_index].price,
-            products[_index].sold
+            gigs[_index].owner,
+            gigs[_index].name, 
+            gigs[_index].gig, 
+            gigs[_index].description, 
+            gigs[_index].location, 
+            gigs[_index].price,
+            gigs[_index].sold
         );
     }
     
-    function buyProduct(uint _index) public payable  {
+    function buyGig(uint _index) public payable  {
         require(
           IERC20Token(cUsdTokenAddress).transferFrom(
             msg.sender,
-            products[_index].owner,
-            products[_index].price
+            gigs[_index].owner,
+            gigs[_index].price
           ),
           "Transfer failed."
         );
-        products[_index].sold++;
+        gigs[_index].sold++;
     }
     
-    function getProductsLength() public view returns (uint) {
-        return (productsLength);
+    function getGigsLength() public view returns (uint) {
+        return (gigsLength);
     }
 }
