@@ -77,9 +77,10 @@ function renderGigs() {
   gigs.forEach((_gig) => {
     const newDiv = document.createElement("div")
     newDiv.className = "col-md-4"
-    newDiv.innerHTML = gigTemplate(_job)
+    newDiv.innerHTML = gigTemplate(_gig)
     document.getElementById("marketplace").appendChild(newDiv)
   })
+  console.log(gigs);
 }
 
 function gigTemplate(_gig) {
