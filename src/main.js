@@ -85,10 +85,10 @@ function renderGigs() {
 
 function gigTemplate(_gig) {
   return `
+  <br/>
     <div class="card mb-4">
-      <img class="card-img-top" src="${_gig.image}" alt="...">
       <div class="position-absolute top-0 end-0 bg-warning mt-4 px-2 py-1 rounded-start">
-        ${_gig.sold} Sold
+        ${_gig.sold} Bookings
       </div>
       <div class="card-body text-left p-4 position-relative">
         <div class="translate-middle-y position-absolute top-0">
@@ -106,7 +106,7 @@ function gigTemplate(_gig) {
           <a class="btn btn-lg btn-outline-dark buyBtn fs-6 p-3" id=${
             _gig.index
           }>
-            Buy for ${_gig.price.shiftedBy(-ERC20_DECIMALS).toFixed(2)} cUSD
+            Book as low as ${_gig.price.shiftedBy(-ERC20_DECIMALS).toFixed(2)} cUSD
           </a>
         </div>
       </div>
