@@ -83,7 +83,7 @@
 			},
 			{
 				"internalType": "string",
-				"name": "_image",
+				"name": "_gig",
 				"type": "string"
 			},
 			{

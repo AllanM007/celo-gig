@@ -5,7 +5,7 @@ import marketplaceAbi from "../contract/marketplace.abi.json"
 import erc20Abi from "../contract/erc20.abi.json"
 
 const ERC20_DECIMALS = 18
-const MPContractAddress = "0x9F1fE1e97d16beaDd4b1a1E89cBCB80635cfA12B"
+const MPContractAddress = "0x6f3D8580bbaADcbCDBC949a804D0cb7C9C21D246"
 const cUSDContractAddress = "0x68DB12FFf61176921407EE87bfbDaE4252fC9D76"
 
 let kit
@@ -150,12 +150,12 @@ window.addEventListener("load", async () => {
 });
 
 document
-  .querySelector("#newProductBtn")
+  .querySelector("#newGigBtn")
   .addEventListener("click", async (e) => {
     const params = [
-      document.getElementById("newProductName").value,
-      document.getElementById("newImgUrl").value,
-      document.getElementById("newProductDescription").value,
+      document.getElementById("newGigName").value,
+      document.getElementById("newGigUrl").value,
+      document.getElementById("newGigDescription").value,
       document.getElementById("newLocation").value,
       new BigNumber(document.getElementById("newPrice").value)
       .shiftedBy(ERC20_DECIMALS)
