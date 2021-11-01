@@ -21,7 +21,6 @@ contract Marketplace {
 
     struct Gig {
         address payable owner;
-        string name;
         string gig;
         string description;
         string location;
@@ -32,7 +31,6 @@ contract Marketplace {
     mapping (uint => Gig) internal gigs;
 
     function writeGig(
-        string memory _name,
         string memory _gig,
         string memory _description, 
         string memory _location, 
@@ -41,7 +39,6 @@ contract Marketplace {
         uint _sold = 0;
         gigs[gigsLength] = Gig(
             payable(msg.sender),
-            _name,
             _gig,
             _description,
             _location,
@@ -56,13 +53,11 @@ contract Marketplace {
         string memory, 
         string memory, 
         string memory, 
-        string memory, 
         uint, 
         uint
     ) {
         return (
             gigs[_index].owner,
-            gigs[_index].name, 
             gigs[_index].gig, 
             gigs[_index].description, 
             gigs[_index].location, 
