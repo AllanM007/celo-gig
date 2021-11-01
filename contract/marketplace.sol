@@ -82,3 +82,67 @@ contract Marketplace {
         return (gigsLength);
     }
 }
+
+contract GigReview {
+
+    uint internal reviewsLength = 0;
+    address internal cUsdTokenAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
+
+    struct Review {
+        address payable owner;
+        string comment;
+        uint rating;
+        uint price;
+        uint sold;
+    }
+
+    mapping (uint => Review) internal reviews;
+
+    function writeReview(
+        string memory _comment, 
+        uint _rating,
+        uint _price
+    ) public {
+        uint _sold = 0;
+        reviews[reviewsLength] = Review(
+            payable(msg.sender),
+            _comment,
+            _rating,
+            _price,
+            _sold
+        );
+        reviewsLength++;
+    }
+
+    function readReview(uint _index) public view returns (
+        address payable,
+        string memory, 
+        uint,
+        uint,
+        uint
+    ) {
+        return (
+            reviews[_index].owner,
+            reviews[_index].comment, 
+            reviews[_index].rating,
+            reviews[_index].price,
+            reviews[_index].sold
+        );
+    }
+    
+    function buyReview(uint _index) public payable  {
+        require(
+          IERC20Token(cUsdTokenAddress).transferFrom(
+            msg.sender,
+            reviews[_index].owner,
+            reviews[_index].price
+          ),
+          "Transfer failed."
+        );
+        reviews[_index].sold++;
+    }
+    
+    function getReviewsLength() public view returns (uint) {
+        return (reviewsLength);
+    }
+}
