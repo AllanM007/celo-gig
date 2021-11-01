@@ -144,7 +144,7 @@ function notificationOff() {
 
 window.addEventListener("load", async () => {
   notification("⌛ Loading...")
-  await connectCeloWallet()
+  // await connectCeloWallet()
   await getBalance()
   await getGigs()
   notificationOff()
@@ -173,6 +173,8 @@ document
     notification(`🎉 You successfully added "${params[0]}".`)
     getGigs()
   })
+
+  document.querySelector("#connectWallet").addEventListener("click", connectCeloWallet)
 
   document.querySelector("#marketplace").addEventListener("click", async (e) => {
     if (e.target.className.includes("buyBtn")) {
