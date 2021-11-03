@@ -206,6 +206,28 @@ document
     getGigs()
   })
 
+document
+  .querySelector("#newReviewBtn")
+  .addEventListener("click", async (e) => {
+    const params = [
+      document.getElementById("newReviewComment").value,
+      document.getElementById("newReviewRating").value,
+      new BigNumber(document.getElementById("newPrice").value)
+      .shiftedBy(ERC20_DECIMALS)
+      .toString()
+    ]
+    notification(`⌛ Adding "${params[0]}"...`)
+    try {
+      const result = await contract.methods
+        .writeReview(...params)
+        .send({ from: kit.defaultAccount })
+    } catch (error) {
+      notification(`⚠️ ${error}.`)
+    }
+    notification(`🎉 You successfully added "${params[0]}".`)
+    getReviews()
+  })
+
   document.querySelector("#connectWallet").addEventListener("click", connectCeloWallet)
 
   document.querySelector("#marketplace").addEventListener("click", async (e) => {
@@ -229,4 +251,24 @@ document
         notification(`⚠️ ${error}.`)
       }
     }
-  }) 
+    if (e.target.className.includes("submitReview")) {
+      const index = e.target.id
+      notification("⌛ Waiting for review approval...")
+      try {
+        await approve(reviews[index].price)
+      } catch (error) {
+        notification(`⚠️ ${error}.`)
+      }
+      notification(`⌛ Awaiting payment for "${reviews[index].comment}"...`)
+      try {
+        const result = await contract.methods
+          .buyReview(index)
+          .send({ from: kit.defaultAccount })
+        notification(`🎉 You successfully bought "${reviews[index].comment}".`)
+        getReviews()
+        getBalance()
+      } catch (error) {
+        notification(`⚠️ ${error}.`)
+      }
+    }
+  })
