@@ -72,6 +72,37 @@ const getGigs = async function() {
   renderGigs()
 }
 
+const getReviews = async function() {
+  const _reviewsLength = await contract.methods.getReviewsLength().call()
+  const _reviews = []
+  for (let i = 0; i < _reviewsLength; i++) {
+    let _review = new Promise(async (resolve, reject) => {
+      let p = await contract.methods.readReview(i).call()
+      resolve({
+        index: i,
+        owner: p[0],
+        comment: p[1],
+        rating: p[2],
+        price: new BigNumber(p[3])
+      })
+    })
+    _reviews.push(_gig)
+  }
+  reviews = await Promise.all(_reviews)
+  renderReviews()
+}
+
+function renderReviews() {
+  document.getElementById("marketplace").innerHTML = ""
+  reviews.forEach((_review) => {
+    const newDiv = document.createElement("div")
+    newDiv.className = "col-md-4"
+    newDiv.innerHTML = reviewTemplate(_gig)
+    document.getElementById("marketplace").appendChild(newDiv)
+  })
+  console.log(reviews);
+}
+
 function renderGigs() {
   document.getElementById("marketplace").innerHTML = ""
   gigs.forEach((_gig) => {
@@ -147,6 +178,7 @@ window.addEventListener("load", async () => {
   // await connectCeloWallet()
   await getBalance()
   await getGigs()
+  await getReviews()
   notificationOff()
 });
 
