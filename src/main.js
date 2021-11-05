@@ -11,6 +11,7 @@ const cUSDContractAddress = "0x68DB12FFf61176921407EE87bfbDaE4252fC9D76"
 let kit
 let contract
 let gigs = []
+let reviews = []
 
 const connectCeloWallet = async function () {
   if (window.celo) {
@@ -173,14 +174,26 @@ function notificationOff() {
   document.querySelector(".alert").style.display = "none"
 }
 
-window.addEventListener("load", async () => {
-  notification("⌛ Loading...")
+document.getElementById("#connectWallet").addEventListener("click", connectCeloWallet
+)
+
+document.getElementById("connectWallet").onclick=async () => {
   // await connectCeloWallet()
-  await getBalance()
-  await getGigs()
-  await getReviews()
-  notificationOff()
-});
+  // await getBalance()
+  // await getGigs()
+  // await getReviews()
+  // notificationOff()
+  console.log("Haro");
+};
+
+// window.addEventListener("load", async () => {
+//   notification("⌛ Loading...")
+//   await connectCeloWallet()
+//   await getBalance()
+//   await getGigs()
+//   await getReviews()
+//   notificationOff()
+// });
 
 document
   .querySelector("#newGigBtn")
@@ -227,8 +240,6 @@ document
     notification(`🎉 You successfully added "${params[0]}".`)
     getReviews()
   })
-
-  document.querySelector("#connectWallet").addEventListener("click", connectCeloWallet)
 
   document.querySelector("#marketplace").addEventListener("click", async (e) => {
     if (e.target.className.includes("buyBtn")) {
