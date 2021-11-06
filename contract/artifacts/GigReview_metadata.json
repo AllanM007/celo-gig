@@ -97,7 +97,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contract/marketplace.sol": "GigReview"
+			"contract/review.sol": "GigReview"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -111,12 +111,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"contract/marketplace.sol": {
-			"keccak256": "0x5fc78e5a8c6daa7ac9be22b764d04c51540e6b12706319fe6412fb13ace23a47",
+		"contract/review.sol": {
+			"keccak256": "0x1d058d2f76daae18a002426f59572a957698dd8d9d8e9c7c2f3d59ab016ab595",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0947c05d8d4c6e2922cdb9824e1d76d42ecbaf65820c484c9c4ebc659d7b00fe",
-				"dweb:/ipfs/QmVRC8X9CTv5cpC9ykigscG9fVmsQHzgGd8C2BbJsm4fEN"
+				"bzz-raw://d85c9782e636cef644caf3d394ab3f42c0dda98426ab9489986c70662e8fe1f8",
+				"dweb:/ipfs/QmeGpLQ78uf13JvkPtjUjukUSZJhRJPCoM5W7FjhKiJKxp"
 			]
 		}
 	},

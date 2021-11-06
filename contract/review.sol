@@ -14,71 +14,61 @@ interface IERC20Token {
   event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
-contract Marketplace {
+contract GigReview {
 
-    uint internal gigsLength = 0;
+    uint internal reviewsLength = 0;
     address internal cUsdTokenAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
 
-    struct Gig {
+    struct Review {
         address payable owner;
-        string gig;
-        string description;
-        string location;
+        uint rating;
         uint price;
         uint sold;
     }
 
-    mapping (uint => Gig) internal gigs;
+    mapping (uint => Review) internal reviews;
 
-    function writeGig(
-        string memory _gig,
-        string memory _description, 
-        string memory _location, 
+    function writeReview( 
+        uint _rating,
         uint _price
     ) public {
         uint _sold = 0;
-        gigs[gigsLength] = Gig(
+        reviews[reviewsLength] = Review(
             payable(msg.sender),
-            _gig,
-            _description,
-            _location,
+            _rating,
             _price,
             _sold
         );
-        gigsLength++;
+        reviewsLength++;
     }
 
-    function readGig(uint _index) public view returns (
+    function readReview(uint _index) public view returns (
         address payable,
-        string memory, 
-        string memory, 
-        string memory, 
-        uint, 
+        uint,
+        uint,
         uint
     ) {
         return (
-            gigs[_index].owner,
-            gigs[_index].gig, 
-            gigs[_index].description, 
-            gigs[_index].location, 
-            gigs[_index].price,
-            gigs[_index].sold
+            reviews[_index].owner,
+            reviews[_index].rating,
+            reviews[_index].price,
+            reviews[_index].sold
         );
     }
     
-    function buyGig(uint _index) public payable  {
+    function buyReview(uint _index) public payable  {
         require(
           IERC20Token(cUsdTokenAddress).transferFrom(
             msg.sender,
-            gigs[_index].owner,
-            gigs[_index].price
+            reviews[_index].owner,
+            reviews[_index].price
           ),
           "Transfer failed."
         );
-        gigs[_index].sold++;
+        reviews[_index].sold++;
     }
     
-    function getGigsLength() public view returns (uint) {
-        return (gigsLength);
+    function getReviewsLength() public view returns (uint) {
+        return (reviewsLength);
     }
 }
