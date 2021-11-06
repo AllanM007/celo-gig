@@ -11,7 +11,7 @@ const cUSDContractAddress = "0x68DB12FFf61176921407EE87bfbDaE4252fC9D76"
 let kit
 let contract
 let gigs = []
-let reviews = []
+// let reviews = []
 
 const connectCeloWallet = async function () {
   if (window.celo) {
@@ -73,36 +73,36 @@ const getGigs = async function() {
   renderGigs()
 }
 
-const getReviews = async function() {
-  const _reviewsLength = await contract.methods.getReviewsLength().call()
-  const _reviews = []
-  for (let i = 0; i < _reviewsLength; i++) {
-    let _review = new Promise(async (resolve, reject) => {
-      let p = await contract.methods.readReview(i).call()
-      resolve({
-        index: i,
-        owner: p[0],
-        comment: p[1],
-        rating: p[2],
-        price: new BigNumber(p[3])
-      })
-    })
-    _reviews.push(_gig)
-  }
-  reviews = await Promise.all(_reviews)
-  renderReviews()
-}
+// const getReviews = async function() {
+//   const _reviewsLength = await contract.methods.getReviewsLength().call()
+//   const _reviews = []
+//   for (let i = 0; i < _reviewsLength; i++) {
+//     let _review = new Promise(async (resolve, reject) => {
+//       let p = await contract.methods.readReview(i).call()
+//       resolve({
+//         index: i,
+//         owner: p[0],
+//         comment: p[1],
+//         rating: p[2],
+//         price: new BigNumber(p[3])
+//       })
+//     })
+//     _reviews.push(_gig)
+//   }
+//   reviews = await Promise.all(_reviews)
+//   renderReviews()
+// }
 
-function renderReviews() {
-  document.getElementById("marketplace").innerHTML = ""
-  reviews.forEach((_review) => {
-    const newDiv = document.createElement("div")
-    newDiv.className = "col-md-4"
-    newDiv.innerHTML = reviewTemplate(_gig)
-    document.getElementById("marketplace").appendChild(newDiv)
-  })
-  console.log(reviews);
-}
+// function renderReviews() {
+//   document.getElementById("marketplace").innerHTML = ""
+//   reviews.forEach((_review) => {
+//     const newDiv = document.createElement("div")
+//     newDiv.className = "col-md-4"
+//     newDiv.innerHTML = reviewTemplate(_gig)
+//     document.getElementById("marketplace").appendChild(newDiv)
+//   })
+//   console.log(reviews);
+// }
 
 function renderGigs() {
   document.getElementById("marketplace").innerHTML = ""
@@ -174,26 +174,20 @@ function notificationOff() {
   document.querySelector(".alert").style.display = "none"
 }
 
-document.getElementById("#connectWallet").addEventListener("click", connectCeloWallet
-)
-
-document.getElementById("connectWallet").onclick=async () => {
-  // await connectCeloWallet()
-  // await getBalance()
-  // await getGigs()
-  // await getReviews()
-  // notificationOff()
-  console.log("Haro");
-};
-
-// window.addEventListener("load", async () => {
-//   notification("⌛ Loading...")
+// document.getElementById("connectWallet").onclick=async () => {
 //   await connectCeloWallet()
 //   await getBalance()
-//   await getGigs()
-//   await getReviews()
 //   notificationOff()
-// });
+// };
+
+window.addEventListener("load", async () => {
+  notification("⌛ Loading...")
+  await connectCeloWallet()
+  await getBalance()
+  await getGigs()
+  // await getReviews()
+  notificationOff()
+});
 
 document
   .querySelector("#newGigBtn")
@@ -219,27 +213,27 @@ document
     getGigs()
   })
 
-document
-  .querySelector("#newReviewBtn")
-  .addEventListener("click", async (e) => {
-    const params = [
-      document.getElementById("newReviewComment").value,
-      document.getElementById("newReviewRating").value,
-      new BigNumber(document.getElementById("newPrice").value)
-      .shiftedBy(ERC20_DECIMALS)
-      .toString()
-    ]
-    notification(`⌛ Adding "${params[0]}"...`)
-    try {
-      const result = await contract.methods
-        .writeReview(...params)
-        .send({ from: kit.defaultAccount })
-    } catch (error) {
-      notification(`⚠️ ${error}.`)
-    }
-    notification(`🎉 You successfully added "${params[0]}".`)
-    getReviews()
-  })
+// document
+//   .querySelector("#newReviewBtn")
+//   .addEventListener("click", async (e) => {
+//     const params = [
+//       document.getElementById("newReviewComment").value,
+//       document.getElementById("newReviewRating").value,
+//       new BigNumber(document.getElementById("newPrice").value)
+//       .shiftedBy(ERC20_DECIMALS)
+//       .toString()
+//     ]
+//     notification(`⌛ Adding "${params[0]}"...`)
+//     try {
+//       const result = await contract.methods
+//         .writeReview(...params)
+//         .send({ from: kit.defaultAccount })
+//     } catch (error) {
+//       notification(`⚠️ ${error}.`)
+//     }
+//     notification(`🎉 You successfully added "${params[0]}".`)
+//     getReviews()
+//   })
 
   document.querySelector("#marketplace").addEventListener("click", async (e) => {
     if (e.target.className.includes("buyBtn")) {
@@ -262,24 +256,24 @@ document
         notification(`⚠️ ${error}.`)
       }
     }
-    if (e.target.className.includes("submitReview")) {
-      const index = e.target.id
-      notification("⌛ Waiting for review approval...")
-      try {
-        await approve(reviews[index].price)
-      } catch (error) {
-        notification(`⚠️ ${error}.`)
-      }
-      notification(`⌛ Awaiting payment for "${reviews[index].comment}"...`)
-      try {
-        const result = await contract.methods
-          .buyReview(index)
-          .send({ from: kit.defaultAccount })
-        notification(`🎉 You successfully bought "${reviews[index].comment}".`)
-        getReviews()
-        getBalance()
-      } catch (error) {
-        notification(`⚠️ ${error}.`)
-      }
-    }
+    // if (e.target.className.includes("submitReview")) {
+    //   const index = e.target.id
+    //   notification("⌛ Waiting for review approval...")
+    //   try {
+    //     await approve(reviews[index].price)
+    //   } catch (error) {
+    //     notification(`⚠️ ${error}.`)
+    //   }
+    //   notification(`⌛ Awaiting payment for "${reviews[index].comment}"...`)
+    //   try {
+    //     const result = await contract.methods
+    //       .buyReview(index)
+    //       .send({ from: kit.defaultAccount })
+    //     notification(`🎉 You successfully bought "${reviews[index].comment}".`)
+    //     getReviews()
+    //     getBalance()
+    //   } catch (error) {
+    //     notification(`⚠️ ${error}.`)
+    //   }
+    // }
   })
