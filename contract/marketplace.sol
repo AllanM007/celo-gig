@@ -90,7 +90,6 @@ contract GigReview {
 
     struct Review {
         address payable owner;
-        string comment;
         uint rating;
         uint price;
         uint sold;
@@ -98,15 +97,13 @@ contract GigReview {
 
     mapping (uint => Review) internal reviews;
 
-    function writeReview(
-        string memory _comment, 
+    function writeReview( 
         uint _rating,
         uint _price
     ) public {
         uint _sold = 0;
         reviews[reviewsLength] = Review(
             payable(msg.sender),
-            _comment,
             _rating,
             _price,
             _sold
@@ -116,14 +113,12 @@ contract GigReview {
 
     function readReview(uint _index) public view returns (
         address payable,
-        string memory, 
         uint,
         uint,
         uint
     ) {
         return (
             reviews[_index].owner,
-            reviews[_index].comment, 
             reviews[_index].rating,
             reviews[_index].price,
             reviews[_index].sold

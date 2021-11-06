@@ -5,7 +5,8 @@ import marketplaceAbi from "../contract/marketplace.abi.json"
 import erc20Abi from "../contract/erc20.abi.json"
 
 const ERC20_DECIMALS = 18
-const MPContractAddress = "0x6f3D8580bbaADcbCDBC949a804D0cb7C9C21D246"
+const MPContractAddress = "0x4a8FA916b15242288BA758C7bDdE93Bf4eB8b921"
+const ReviewContractAddress = "0x35f890e1A85200AAF1D38C5669145e1063c5b993"
 const cUSDContractAddress = "0x68DB12FFf61176921407EE87bfbDaE4252fC9D76"
 
 let kit
@@ -269,7 +270,7 @@ document
     //     const result = await contract.methods
     //       .buyReview(index)
     //       .send({ from: kit.defaultAccount })
-    //     notification(`🎉 You successfully bought "${reviews[index].comment}".`)
+    //     notification(`🎉 You successfully submitted "${reviews[index].comment}".`)
     //     getReviews()
     //     getBalance()
     //   } catch (error) {

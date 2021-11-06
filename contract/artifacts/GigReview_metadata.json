@@ -13,14 +13,14 @@
 						"type": "uint256"
 					}
 				],
-				"name": "buyGig",
+				"name": "buyReview",
 				"outputs": [],
 				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "getGigsLength",
+				"name": "getReviewsLength",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -39,7 +39,7 @@
 						"type": "uint256"
 					}
 				],
-				"name": "readGig",
+				"name": "readReview",
 				"outputs": [
 					{
 						"internalType": "address payable",
@@ -47,19 +47,9 @@
 						"type": "address"
 					},
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
+						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
@@ -78,19 +68,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "_gig",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "_description",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "_location",
-						"type": "string"
+						"internalType": "uint256",
+						"name": "_rating",
+						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
@@ -98,7 +78,7 @@
 						"type": "uint256"
 					}
 				],
-				"name": "writeGig",
+				"name": "writeReview",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -117,7 +97,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contract/marketplace.sol": "Marketplace"
+			"contract/marketplace.sol": "GigReview"
 		},
 		"evmVersion": "london",
 		"libraries": {},
