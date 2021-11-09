@@ -5,7 +5,7 @@ import marketplaceAbi from "../contract/marketplace.abi.json"
 import erc20Abi from "../contract/erc20.abi.json"
 
 const ERC20_DECIMALS = 18
-const MPContractAddress = "0x8B974b4A9409D2E3a3f1c6BC4C98A1eB58AFE2B7"
+const MPContractAddress = "0xDC75291C54a423716FF895cBB0d863dc110c3242"
 // const ReviewContractAddress = "0x01c2da639B0086D73da4C53D822E1ABb0e727Ac4"
 const cUSDContractAddress = "0x68DB12FFf61176921407EE87bfbDaE4252fC9D76"
 
@@ -43,6 +43,7 @@ async function approve(_price) {
     .approve(MPContractAddress, _price)
     .send({ from: kit.defaultAccount })
   return result
+  console.log(result);
 }
 
 const getBalance = async function () {
@@ -105,7 +106,7 @@ function gigTemplate(_gig) {
           <span>${_gig.description}</span>
         </p>
         <div class="d-grid gap-2">
-          <a class="btn btn-lg btn-outline-dark buyGigBtn fs-6 p-3" id=${
+          <a class="btn btn-lg btn-outline-dark buyBtn fs-6 p-3" id=${
             _gig.index
           }>
             Book as low as ${_gig.price.shiftedBy(-ERC20_DECIMALS).toFixed(2)} cUSD
@@ -182,9 +183,9 @@ document
   })
 
   document.querySelector("#marketplace").addEventListener("click", async (e) => {
-    if (e.target.className.includes("buyGigBtn")) {
+    if (e.target.className.includes("buyBtn")) {
       const index = e.target.id
-      console.log(gigs[index].price);
+      console.log(gigs[index].price.c);
       notification("⌛ Waiting for payment approval...")
       try {
         await approve(gigs[index].price)
