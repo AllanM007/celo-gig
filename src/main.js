@@ -63,14 +63,14 @@ const getGigs = async function() {
         name: p[1],
         gig: p[2],
         description: p[3],
-        location: p[4],
-        price: new BigNumber(p[5]),
-        sold: p[6],
+        price: new BigNumber(p[4]),
+        sold: p[5],
       })
     })
     _gigs.push(_gig)
   }
   gigs = await Promise.all(_gigs)
+  console.log(gigs);
   renderGigs()
 }
 
@@ -98,11 +98,11 @@ function gigTemplate(_gig) {
         </div>
         <h2 class="card-title fs-4 fw-bold mt-2">${_gig.name}</h2>
         <p class="card-text mb-4" style="min-height: 82px">
-          ${_gig.description}             
+          ${_gig.gig}             
         </p>
         <p class="card-text mt-4">
           <i class="bi bi-geo-alt-fill"></i>
-          <span>${_gig.location}</span>
+          <span>${_gig.description}</span>
         </p>
         <div class="d-grid gap-2">
           <a class="btn btn-lg btn-outline-dark buyGigBtn fs-6 p-3" id=${
@@ -164,7 +164,6 @@ document
   .addEventListener("click", async (e) => {
     const params = [
       document.getElementById("newGigName").value,
-      // document.getElementById("newGigUrl").value,
       document.getElementById("newGigDescription").value,
       document.getElementById("newGigLocation").value,
       new BigNumber(document.getElementById("newGigPrice").value)
@@ -186,19 +185,20 @@ document
   document.querySelector("#marketplace").addEventListener("click", async (e) => {
     if (e.target.className.includes("buyGigBtn")) {
       const index = e.target.id
+      console.log(gigs[index].price);
       notification("⌛ Waiting for payment approval...")
       try {
-        await approve(products[index].price)
+        await approve(gigs[index].price)
       } catch (error) {
         notification(`⚠️ ${error}.`)
       }
-      notification(`⌛ Awaiting payment for "${products[index].name}"...`)
+      notification(`⌛ Awaiting payment for "${gigs[index].name}"...`)
       try {
         const result = await contract.methods
-          .buyProduct(index)
+          .buyGig(index)
           .send({ from: kit.defaultAccount })
-        notification(`🎉 You successfully bought "${products[index].name}".`)
-        getProducts()
+        notification(`🎉 You successfully bought "${gigs[index].name}".`)
+        getGigs()
         getBalance()
       } catch (error) {
         notification(`⚠️ ${error}.`)
