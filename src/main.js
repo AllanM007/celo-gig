@@ -5,8 +5,8 @@ import marketplaceAbi from "../contract/marketplace.abi.json"
 import erc20Abi from "../contract/erc20.abi.json"
 
 const ERC20_DECIMALS = 18
-const MPContractAddress = "0x4a8FA916b15242288BA758C7bDdE93Bf4eB8b921"
-const ReviewContractAddress = "0x35f890e1A85200AAF1D38C5669145e1063c5b993"
+const MPContractAddress = "0x8B974b4A9409D2E3a3f1c6BC4C98A1eB58AFE2B7"
+const ReviewContractAddress = "0x01c2da639B0086D73da4C53D822E1ABb0e727Ac4"
 const cUSDContractAddress = "0x68DB12FFf61176921407EE87bfbDaE4252fC9D76"
 
 let kit
@@ -74,37 +74,6 @@ const getGigs = async function() {
   renderGigs()
 }
 
-// const getReviews = async function() {
-//   const _reviewsLength = await contract.methods.getReviewsLength().call()
-//   const _reviews = []
-//   for (let i = 0; i < _reviewsLength; i++) {
-//     let _review = new Promise(async (resolve, reject) => {
-//       let p = await contract.methods.readReview(i).call()
-//       resolve({
-//         index: i,
-//         owner: p[0],
-//         comment: p[1],
-//         rating: p[2],
-//         price: new BigNumber(p[3])
-//       })
-//     })
-//     _reviews.push(_gig)
-//   }
-//   reviews = await Promise.all(_reviews)
-//   renderReviews()
-// }
-
-// function renderReviews() {
-//   document.getElementById("marketplace").innerHTML = ""
-//   reviews.forEach((_review) => {
-//     const newDiv = document.createElement("div")
-//     newDiv.className = "col-md-4"
-//     newDiv.innerHTML = reviewTemplate(_gig)
-//     document.getElementById("marketplace").appendChild(newDiv)
-//   })
-//   console.log(reviews);
-// }
-
 function renderGigs() {
   document.getElementById("marketplace").innerHTML = ""
   gigs.forEach((_gig) => {
@@ -136,7 +105,7 @@ function gigTemplate(_gig) {
           <span>${_gig.location}</span>
         </p>
         <div class="d-grid gap-2">
-          <a class="btn btn-lg btn-outline-dark buyBtn fs-6 p-3" id=${
+          <a class="btn btn-lg btn-outline-dark buyGigBtn fs-6 p-3" id=${
             _gig.index
           }>
             Book as low as ${_gig.price.shiftedBy(-ERC20_DECIMALS).toFixed(2)} cUSD
@@ -195,10 +164,10 @@ document
   .addEventListener("click", async (e) => {
     const params = [
       document.getElementById("newGigName").value,
-      document.getElementById("newGigUrl").value,
+      // document.getElementById("newGigUrl").value,
       document.getElementById("newGigDescription").value,
-      document.getElementById("newLocation").value,
-      new BigNumber(document.getElementById("newPrice").value)
+      document.getElementById("newGigLocation").value,
+      new BigNumber(document.getElementById("newGigPrice").value)
       .shiftedBy(ERC20_DECIMALS)
       .toString()
     ]
@@ -214,67 +183,25 @@ document
     getGigs()
   })
 
-// document
-//   .querySelector("#newReviewBtn")
-//   .addEventListener("click", async (e) => {
-//     const params = [
-//       document.getElementById("newReviewComment").value,
-//       document.getElementById("newReviewRating").value,
-//       new BigNumber(document.getElementById("newPrice").value)
-//       .shiftedBy(ERC20_DECIMALS)
-//       .toString()
-//     ]
-//     notification(`⌛ Adding "${params[0]}"...`)
-//     try {
-//       const result = await contract.methods
-//         .writeReview(...params)
-//         .send({ from: kit.defaultAccount })
-//     } catch (error) {
-//       notification(`⚠️ ${error}.`)
-//     }
-//     notification(`🎉 You successfully added "${params[0]}".`)
-//     getReviews()
-//   })
-
   document.querySelector("#marketplace").addEventListener("click", async (e) => {
-    if (e.target.className.includes("buyBtn")) {
+    if (e.target.className.includes("buyGigBtn")) {
       const index = e.target.id
       notification("⌛ Waiting for payment approval...")
       try {
-        await approve(gigs[index].price)
+        await approve(products[index].price)
       } catch (error) {
         notification(`⚠️ ${error}.`)
       }
-      notification(`⌛ Awaiting payment for "${gigs[index].name}"...`)
+      notification(`⌛ Awaiting payment for "${products[index].name}"...`)
       try {
         const result = await contract.methods
-          .buyGig(index)
+          .buyProduct(index)
           .send({ from: kit.defaultAccount })
-        notification(`🎉 You successfully bought "${gigs[index].name}".`)
-        getGigs()
+        notification(`🎉 You successfully bought "${products[index].name}".`)
+        getProducts()
         getBalance()
       } catch (error) {
         notification(`⚠️ ${error}.`)
       }
     }
-    // if (e.target.className.includes("submitReview")) {
-    //   const index = e.target.id
-    //   notification("⌛ Waiting for review approval...")
-    //   try {
-    //     await approve(reviews[index].price)
-    //   } catch (error) {
-    //     notification(`⚠️ ${error}.`)
-    //   }
-    //   notification(`⌛ Awaiting payment for "${reviews[index].comment}"...`)
-    //   try {
-    //     const result = await contract.methods
-    //       .buyReview(index)
-    //       .send({ from: kit.defaultAccount })
-    //     notification(`🎉 You successfully submitted "${reviews[index].comment}".`)
-    //     getReviews()
-    //     getBalance()
-    //   } catch (error) {
-    //     notification(`⚠️ ${error}.`)
-    //   }
-    // }
-  })
+  }) 
