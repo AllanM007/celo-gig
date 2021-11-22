@@ -17,7 +17,7 @@ interface IERC20Token {
 contract Marketplace {
 
     uint internal gigsLength = 0;
-    address internal cUsdTokenAddress = 0x68DB12FFf61176921407EE87bfbDaE4252fC9D76;
+    address internal cUsdTokenAddress = 0x069fdfecbf3275aabCd886450270D8B4241031D4;
 
     struct Gig {
         address payable owner;

@@ -7,7 +7,7 @@ import erc20Abi from "../contract/erc20.abi.json"
 const ERC20_DECIMALS = 18
 const MPContractAddress = "0xDC75291C54a423716FF895cBB0d863dc110c3242"
 // const ReviewContractAddress = "0x01c2da639B0086D73da4C53D822E1ABb0e727Ac4"
-const cUSDContractAddress = "0x68DB12FFf61176921407EE87bfbDaE4252fC9D76"
+const cUSDContractAddress = "0x069fdfecbf3275aabCd886450270D8B4241031D4"
 
 let kit
 let contract
@@ -18,14 +18,14 @@ const connectCeloWallet = async function () {
   if (window.celo) {
     notification("⚠️ Please approve this DApp to use it.")
     try {
-      await window.celo.enable()
-      notificationOff()
+      await window.celo.enable();
+      notificationOff();
 
-      const web3 = new Web3(window.celo)
-      kit = newKitFromWeb3(web3)
+      const web3 = new Web3(window.celo);
+      kit = newKitFromWeb3(web3);
 
-      const accounts = await kit.web3.eth.getAccounts()
-      kit.defaultAccount = accounts[0]
+      const accounts = await kit.web3.eth.getAccounts();
+      kit.defaultAccount = accounts[0];
 
       contract = new kit.web3.eth.Contract(marketplaceAbi, MPContractAddress)
     } catch (error) {
@@ -37,19 +37,19 @@ const connectCeloWallet = async function () {
 }
 
 async function approve(_price) {
-  const cUSDContract = new kit.web3.eth.Contract(erc20Abi, cUSDContractAddress)
+  const cUSDContract = new kit.web3.eth.Contract(erc20Abi, cUSDContractAddress);
 
   const result = await cUSDContract.methods
     .approve(MPContractAddress, _price)
-    .send({ from: kit.defaultAccount })
-  return result
+    .send({ from: kit.defaultAccount });
+  return result;
   console.log(result);
 }
 
 const getBalance = async function () {
-  const totalBalance = await kit.getTotalBalance(kit.defaultAccount)
-  const cUSDBalance = totalBalance.cUSD.shiftedBy(-ERC20_DECIMALS).toFixed(2)
-  document.querySelector("#balance").textContent = cUSDBalance
+  const totalBalance = await kit.getTotalBalance(kit.defaultAccount);
+  const cUSDBalance = totalBalance.cUSD.shiftedBy(-ERC20_DECIMALS).toFixed(2);
+  document.querySelector("#balance").textContent = cUSDBalance;
 }
 
 const getGigs = async function() {
@@ -168,7 +168,7 @@ document
       document.getElementById("newGigLocation").value,
       new BigNumber(document.getElementById("newGigPrice").value)
       .shiftedBy(ERC20_DECIMALS)
-      .toString()
+      .toString(),
     ]
     notification(`⌛ Adding "${params[0]}"...`)
     try {
