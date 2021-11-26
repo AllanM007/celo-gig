@@ -185,7 +185,7 @@ document
   document.querySelector("#marketplace").addEventListener("click", async (e) => {
     if (e.target.className.includes("buyBtn")) {
       const index = e.target.id
-      console.log(gigs[index].price.c);
+      // console.log(gigs[index].price.c);
       notification("⌛ Waiting for payment approval...")
       try {
         await approve(gigs[index].price)
